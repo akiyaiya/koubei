@@ -399,16 +399,18 @@ function getFiltered(){
   const sf=(document.getElementById('fl-search').value||'').toLowerCase();
   return cases.filter(c=>{
     if(c.branch!==curBranch) return false;
-    if(curMonth&&!inMonth(c.keydate,curMonth)) return false;
+    if(curMonth&&!inMonth(c.keydate,parseInt(curMonth),new Date().getFullYear())) return false;
     if(lf&&c.level!==lf) return false;
     if(sf&&!c.name.toLowerCase().includes(sf)&&!c.code.toLowerCase().includes(sf)&&!(c.staff||'').toLowerCase().includes(sf)) return false;
     return true;
   }).sort((a,b)=>(b.keydate||'').localeCompare(a.keydate||''));
 }
-function inMonth(d,m){
+function inMonth(d,m,y){
   if(!d) return false;
   const p=d.replace(/-/g,'/').split('/');
-  return p.length>=2&&parseInt(p[1])===parseInt(m);
+  if(p.length<2) return false;
+  if(y && parseInt(p[0])!==parseInt(y)) return false;
+  return parseInt(p[1])===parseInt(m);
 }
 
 function renderCur(){
@@ -514,12 +516,13 @@ function renderStat(){
     return p.length>=2?`${p[0]}/${p[1].padStart(2,'0')}`:null;
   }).filter(Boolean))].sort().reverse();
 
-  // derive primary staff per branch from most recent case
-  const DEFAULT_STAFF={仁愛:'',桃園:'',向上:'王喬儀',巨蛋:'',竹北:'謝昀溱',北屯:''};
+  // fixed staff per branch — overrides whatever is in case data
+  const FIXED_STAFF={向上:'王喬儀',竹北:'謝昀溱'};
   const staffMap={};
   BRANCHES.forEach(br=>{
+    if(FIXED_STAFF[br]){ staffMap[br]=FIXED_STAFF[br]; return; }
     const bCases=cases.filter(c=>c.branch===br&&c.staff).sort((a,b)=>(b.keydate||'').localeCompare(a.keydate||''));
-    staffMap[br]=bCases[0]?.staff||DEFAULT_STAFF[br]||'';
+    staffMap[br]=bCases[0]?.staff||'';
   });
 
   const html=yrmos.map(ym=>{
@@ -533,7 +536,7 @@ function renderStat(){
       : '總計≥3 且 含匿名公開或全臉公開≥1';
 
     const rows=BRANCHES.map(br=>{
-      const bc=cases.filter(c=>c.branch===br&&inMonth(c.keydate,ml));
+      const bc=cases.filter(c=>c.branch===br&&inMonth(c.keydate,mNum,parseInt(y)));
       const full=bc.filter(c=>c.level==='全臉公開').length;
       const anon=bc.filter(c=>c.level==='匿名公開').length;
       const inner=bc.filter(c=>c.level==='院內公開').length;
