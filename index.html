@@ -260,7 +260,7 @@ code{font-family:var(--mono);font-size:11px;color:var(--text2)}
       <div class="fgrid">
         <div class="fg"><label>key 單日期 *</label><input type="date" id="m-kd"></div>
         <div class="fg"><label>手術日期</label><input type="text" id="m-surg" placeholder="例：2026/04/27 08:30"></div>
-        <div class="fg"><label>諮詢師</label><input type="text" id="m-staff" placeholder="例：蔡忻宸"></div>
+        <div class="fg"><label>諮詢師（多位用「、」分隔）</label><input type="text" id="m-staff" placeholder="例：蔡忻宸、王并忻"></div>
         <div class="fg"><label>分院</label>
           <select id="m-branch">
             <option>仁愛</option><option>桃園</option><option>向上</option>
@@ -454,7 +454,7 @@ function renderList(rows){
       </td>
       <td class="tdr"><span class="amt ${ac}">$${a.toLocaleString()}</span></td>
       <td style="font-size:11px;color:var(--text2)">${c.branch}</td>
-      <td>${esc(c.staff||'—')}</td>
+      <td style="white-space:normal;max-width:90px;font-size:11px">${esc(c.staff||'—')}</td>
       <td><input class="td-inp" value="${esc(c.status||'')}" placeholder="—" onchange="sf('${c.id}','status',this.value)" style="width:94px"></td>
       <td><input class="td-inp" value="${esc(c.card||'')}" placeholder="—" onchange="sf('${c.id}','card',this.value)" style="width:70px"></td>
       <td style="text-align:right;white-space:nowrap">
@@ -513,10 +513,11 @@ function renderStat(){
     <div class="scard"><div class="scard-lbl">匿名公開</div><div class="scard-val">${anon}</div><div class="scard-sub"></div></div>
     <div class="scard"><div class="scard-lbl">折讓總計</div><div class="scard-val">$${Math.round(tAmt/1000)}K</div><div class="scard-sub">${tAmt.toLocaleString()}</div></div>`;
 
-  // collect months that have data
+  // collect months that have data — use saleDate (XLS交易日) for stat grouping
   const yrmos=[...new Set(cases.map(c=>{
-    if(!c.keydate) return null;
-    const p=c.keydate.replace(/-/g,'/').split('/');
+    const d=(c.saleDate||c.keydate||'');
+    if(!d) return null;
+    const p=d.replace(/-/g,'/').split('/');
     return p.length>=2?`${p[0]}/${p[1].padStart(2,'0')}`:null;
   }).filter(Boolean))].sort().reverse();
 
@@ -540,7 +541,7 @@ function renderStat(){
       : '總計≥3 且 含匿名公開或全臉公開≥1';
 
     const rows=BRANCHES.map(br=>{
-      const bc=cases.filter(c=>c.branch===br&&inMonth(c.keydate,mNum,parseInt(y)));
+      const bc=cases.filter(c=>c.branch===br&&inMonth((c.saleDate||c.keydate||''),mNum,parseInt(y)));
       const full=bc.filter(c=>c.level==='全臉公開').length;
       const anon=bc.filter(c=>c.level==='匿名公開').length;
       const inner=bc.filter(c=>c.level==='院內公開').length;
@@ -699,7 +700,9 @@ function handleFile(file){
         const level=inferLevel(product);
         const branch=inferBranch(String(r[sC]||'').trim())||(curBranch==='__stat'?'仁愛':curBranch);
         const rawSt=String(r[Math.max(stC,0)]||'').trim();
-        const staff=rawSt.split('-')[0].replace(/\n.*/,'').trim();
+        // 保留所有諮詢師，用「、」分隔
+        const staffParts=rawSt.split(/[\n\\n]/).map(s=>s.split('-')[0].trim()).filter(Boolean);
+        const staff=[...new Set(staffParts)].join('、');
         if(name&&ds) parsedRows.push({date:ds,name,code,level,amount:AMAP[level]||0,branch,staff});
       }
       if(!parsedRows.length){toast('解析到 0 筆');return;}
