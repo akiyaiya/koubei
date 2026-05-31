@@ -1,6 +1,3 @@
-
-raw
-口碑案例管理系統 · HTML
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -23,32 +20,32 @@ raw
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{font-size:13px}
 body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
- 
+
 .header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 20px;height:50px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 1px 3px rgba(0,0,0,.05)}
 .hlogo{display:flex;align-items:center;gap:8px}
 .htitle{font-size:13px;font-weight:700;color:var(--accent)}
 .hsub{font-size:10px;color:var(--text3);margin-left:8px}
 .hright{display:flex;gap:6px;align-items:center}
- 
+
 .branch-bar{background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:flex-end;padding:0 20px;gap:0;overflow-x:auto;position:sticky;top:50px;z-index:190}
 .btab{padding:9px 16px 8px;font-size:12px;font-weight:500;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .13s;user-select:none}
 .btab:hover{color:var(--text)}
 .btab.active{color:var(--accent);border-bottom-color:var(--accent)}
 .btab.stab{color:var(--text2);border-left:1px solid var(--border);margin-left:auto;padding-left:16px}
 .btab.stab.active{color:var(--pink);border-bottom-color:var(--pink)}
- 
+
 .month-bar{padding:12px 20px 0;display:flex;gap:5px;flex-wrap:wrap;background:var(--surface);border-bottom:1px solid var(--border)}
 .mbtn{padding:4px 13px 8px;font-size:11px;font-weight:500;cursor:pointer;background:transparent;color:var(--text3);border:none;border-bottom:2px solid transparent;transition:all .12s;white-space:nowrap}
 .mbtn:hover{color:var(--text)}
 .mbtn.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:700}
- 
+
 .toolbar{display:flex;gap:8px;align-items:center;padding:12px 20px;background:var(--surface);border-bottom:1px solid var(--border);flex-wrap:wrap}
 .tl{display:flex;gap:6px;align-items:center;flex:1;flex-wrap:wrap}
 .tr{display:flex;gap:6px;align-items:center}
 .vt{display:flex;border:1px solid var(--border);border-radius:5px;overflow:hidden}
 .vtb{padding:4px 10px;font-size:11px;cursor:pointer;background:var(--surface);border:none;color:var(--text2);font-family:'Noto Sans TC',sans-serif;transition:all .12s}
 .vtb.active{background:var(--accent);color:#fff}
- 
+
 .btn{display:inline-flex;align-items:center;gap:4px;padding:6px 12px;border:1px solid var(--border);border-radius:5px;background:var(--surface);color:var(--text);font-size:12px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;transition:all .12s;white-space:nowrap}
 .btn:hover{background:var(--bg);border-color:var(--border2)}
 .btn:active{transform:scale(.98)}
@@ -58,9 +55,9 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
 .btn-danger:hover{background:var(--pink-bg)}
 .btn-sm{padding:3px 9px;font-size:11px}
 .btn-icon{padding:5px 6px}
- 
+
 .main-content{padding:16px 20px 48px}
- 
+
 .table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06)}
 .tw-head{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:8px}
 .tw-title{font-size:12px;font-weight:500;color:var(--text2)}
@@ -73,7 +70,7 @@ tbody tr:hover td{background:#FAFAF8}
 .thr{text-align:right!important}
 .tdr{text-align:right}
 .tdc{text-align:center}
- 
+
 .col-cb{width:30px}
 .col-no{width:32px}
 .col-date{width:86px}
@@ -86,30 +83,30 @@ tbody tr:hover td{background:#FAFAF8}
 .col-status{width:100px}
 .col-card{width:76px}
 .col-act{width:54px}
- 
+
 .tag{display:inline-block;font-size:10px;padding:2px 7px;border-radius:3px;font-weight:500;white-space:nowrap;border:1px solid transparent}
 .tag-全臉公開{background:#E4EDE9;color:#1B5C3A;border-color:#B8D4C4}
 .tag-匿名公開{background:#EEF3FB;color:#1A3A6C;border-color:#B8CEDE}
 .tag-院內公開{background:#FEF8EC;color:#7A5800;border-color:#DFC07A}
 .tag-無折扣{background:#F4F2ED;color:#6B6560;border-color:#C8C2B5}
- 
+
 .cb{width:14px;height:14px;cursor:pointer;margin:0;accent-color:var(--accent)}
 .cb-post{accent-color:var(--pink)}
- 
+
 .td-inp{border:none;background:transparent;font-size:12px;font-family:'Noto Sans TC',sans-serif;color:var(--text);width:100%;outline:none;padding:0}
 .td-inp:focus{background:#F4F2ED;border-radius:3px;padding:1px 4px}
 .td-inp::placeholder{color:var(--text3)}
- 
+
 .lsel{border:1px solid var(--border);border-radius:4px;font-size:10px;padding:2px 5px;font-family:'Noto Sans TC',sans-serif;background:var(--surface);cursor:pointer;color:var(--text);max-width:100px}
 .lsel:focus{outline:none;border-color:var(--accent)}
- 
+
 .amt{font-family:var(--mono);font-size:12px}
 .amt-hi{color:#1B5C3A;font-weight:500}
 .amt-md{color:#1A3A6C}
 .amt-lo{color:#7A5800}
 .amt-z{color:var(--text3)}
 code{font-family:var(--mono);font-size:11px;color:var(--text2)}
- 
+
 .detail-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
 .dc{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06)}
 .dc-head{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
@@ -122,13 +119,13 @@ code{font-family:var(--mono);font-size:11px;color:var(--text2)}
 .dc-ck{display:flex;flex-direction:column;gap:4px}
 .dc-ck label{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text2);cursor:pointer}
 .dc-foot{padding:8px 14px 10px;border-top:1px solid var(--border);display:flex;gap:6px;justify-content:flex-end}
- 
+
 .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
 .scard{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 14px}
 .scard-lbl{font-size:10px;color:var(--text3);letter-spacing:.04em;text-transform:uppercase;margin-bottom:4px}
 .scard-val{font-size:22px;font-weight:700;font-family:var(--mono)}
 .scard-sub{font-size:10px;color:var(--text3);margin-top:2px}
- 
+
 .mwrap{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:16px}
 .mwrap-h{padding:9px 14px;background:var(--pink-bg);border-bottom:1px solid var(--pink-border);font-size:12px;font-weight:700;color:var(--pink)}
 .mtable{width:100%;border-collapse:collapse;font-size:12px}
@@ -139,9 +136,9 @@ code{font-family:var(--mono);font-size:11px;color:var(--text2)}
 .mtable tr:last-child td{border-bottom:none}
 .mtable tr:hover td{background:#FAFAF8}
 .mtotal{background:var(--pink-bg)!important;font-weight:700;color:var(--pink)}
- 
+
 .parse-info{background:var(--blue-bg);border:1px solid #B8CEDE;border-radius:6px;padding:9px 13px;font-size:12px;color:var(--blue);margin-bottom:10px}
- 
+
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.38);z-index:500;display:none;align-items:center;justify-content:center}
 .overlay.open{display:flex}
 .modal{background:var(--surface);border-radius:10px;width:92%;max-width:560px;max-height:92vh;overflow-y:auto;box-shadow:0 8px 40px rgba(0,0,0,.2)}
@@ -159,7 +156,7 @@ code{font-family:var(--mono);font-size:11px;color:var(--text2)}
 .sec-lbl{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--text3);padding-bottom:7px;border-bottom:1px solid var(--border);margin-bottom:12px;margin-top:4px}
 .cg{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:14px}
 .cg label{display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer}
- 
+
 .toast{position:fixed;bottom:20px;right:20px;background:var(--text);color:#fff;padding:8px 15px;border-radius:7px;font-size:12px;z-index:999;display:none;box-shadow:0 4px 16px rgba(0,0,0,.2)}
 .empty{padding:44px 20px;text-align:center;color:var(--text3)}
 .empty-ico{font-size:30px;margin-bottom:10px;display:block}
@@ -169,7 +166,7 @@ code{font-family:var(--mono);font-size:11px;color:var(--text2)}
 </style>
 </head>
 <body>
- 
+
 <div class="header">
   <div class="hlogo">
     <span style="font-size:17px">🏥</span>
@@ -183,7 +180,7 @@ code{font-family:var(--mono);font-size:11px;color:var(--text2)}
     <button class="btn" onclick="doExport()">↓ 匯出 XLSX</button>
   </div>
 </div>
- 
+
 <div class="branch-bar" id="branch-bar">
   <div class="btab active" data-b="仁愛" onclick="switchBranch('仁愛')">仁愛 <small id="bc-仁愛" style="font-size:10px;color:var(--text3);margin-left:3px"></small></div>
   <div class="btab" data-b="桃園" onclick="switchBranch('桃園')">桃園 <small id="bc-桃園" style="font-size:10px;color:var(--text3);margin-left:3px"></small></div>
@@ -193,7 +190,7 @@ code{font-family:var(--mono);font-size:11px;color:var(--text2)}
   <div class="btab" data-b="北屯" onclick="switchBranch('北屯')">北屯 <small id="bc-北屯" style="font-size:10px;color:var(--text3);margin-left:3px"></small></div>
   <div class="btab stab" data-b="__stat" onclick="switchBranch('__stat')">📊 每月統計</div>
 </div>
- 
+
 <div id="case-area">
   <div class="month-bar" id="month-bar"></div>
   <div class="toolbar">
@@ -242,14 +239,14 @@ code{font-family:var(--mono);font-size:11px;color:var(--text2)}
     </div>
   </div>
 </div>
- 
+
 <div id="stat-area" style="display:none">
   <div class="main-content">
     <div class="stat-grid" id="stat-cards"></div>
     <div id="monthly-wrap"></div>
   </div>
 </div>
- 
+
 <!-- ADD/EDIT MODAL -->
 <div class="overlay" id="modal">
   <div class="modal">
@@ -302,7 +299,7 @@ code{font-family:var(--mono);font-size:11px;color:var(--text2)}
     </div>
   </div>
 </div>
- 
+
 <!-- IMPORT MODAL -->
 <div class="overlay" id="imp-modal">
   <div class="modal" style="max-width:840px">
@@ -337,18 +334,18 @@ code{font-family:var(--mono);font-size:11px;color:var(--text2)}
     </div>
   </div>
 </div>
- 
+
 <div class="toast" id="toast"></div>
- 
+
 <script>
 const BRANCHES=['仁愛','桃園','向上','巨蛋','竹北','北屯'];
 const BCODE={仁愛:'M001',桃園:'M002',向上:'M003',巨蛋:'M005',竹北:'M006',北屯:'M007'};
 const AMAP={'全臉公開':15000,'匿名公開':10000,'院內公開':5000,'無折扣':0};
 const MONTHS=['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
 const SK='koubei_v3';
- 
+
 let cases=[], curBranch='仁愛', curMonth='', curView='list', editId=null, parsedRows=[];
- 
+
 function load(){try{cases=JSON.parse(localStorage.getItem(SK))||[];}catch(e){cases=[];}}
 function save(){
   localStorage.setItem(SK,JSON.stringify(cases));
@@ -357,14 +354,14 @@ function save(){
   updateBadges();
 }
 load(); updateBadges();
- 
+
 function updateBadges(){
   BRANCHES.forEach(br=>{
     const el=document.getElementById('bc-'+br);
     if(el){const n=cases.filter(c=>c.branch===br).length; el.textContent=n?`(${n})`:''}
   });
 }
- 
+
 /* ── MONTH BAR ── */
 function buildMonthBar(){
   const bar=document.getElementById('month-bar');
@@ -379,7 +376,7 @@ function buildMonthBar(){
   mk('全部','');
   MONTHS.forEach(m=>mk(m,m));
 }
- 
+
 /* ── BRANCH SWITCH ── */
 function switchBranch(br){
   curBranch=br;
@@ -395,7 +392,7 @@ function switchBranch(br){
     renderCur();
   }
 }
- 
+
 /* ── FILTER ── */
 function getFiltered(){
   const lf=document.getElementById('fl-level').value;
@@ -413,7 +410,7 @@ function inMonth(d,m){
   const p=d.replace(/-/g,'/').split('/');
   return p.length>=2&&parseInt(p[1])===parseInt(m);
 }
- 
+
 function renderCur(){
   const rows=getFiltered();
   document.getElementById('count-lbl').textContent=`共 ${rows.length} 筆`;
@@ -426,7 +423,7 @@ function setView(v){
   document.getElementById('view-card').style.display=v==='card'?'':'none';
   renderCur();
 }
- 
+
 /* ── LIST VIEW ── */
 function renderList(rows){
   const tb=document.getElementById('case-tbody');
@@ -461,7 +458,7 @@ function renderList(rows){
     </tr>`;
   }).join('');
 }
- 
+
 /* ── CARD VIEW ── */
 function renderCards(rows){
   const g=document.getElementById('card-grid');
@@ -497,7 +494,7 @@ function renderCards(rows){
       </div>
     </div>`).join('');
 }
- 
+
 /* ── STAT VIEW ── */
 function renderStat(){
   const tot=cases.length;
@@ -509,14 +506,14 @@ function renderStat(){
     <div class="scard"><div class="scard-lbl">全臉公開</div><div class="scard-val">${full}</div><div class="scard-sub">最高授權等級</div></div>
     <div class="scard"><div class="scard-lbl">匿名公開</div><div class="scard-val">${anon}</div><div class="scard-sub"></div></div>
     <div class="scard"><div class="scard-lbl">折讓總計</div><div class="scard-val">$${Math.round(tAmt/1000)}K</div><div class="scard-sub">${tAmt.toLocaleString()}</div></div>`;
- 
+
   // collect months that have data
   const yrmos=[...new Set(cases.map(c=>{
     if(!c.keydate) return null;
     const p=c.keydate.replace(/-/g,'/').split('/');
     return p.length>=2?`${p[0]}/${p[1].padStart(2,'0')}`:null;
   }).filter(Boolean))].sort().reverse();
- 
+
   // derive primary staff per branch from most recent case
   const DEFAULT_STAFF={仁愛:'',桃園:'',向上:'王喬儀',巨蛋:'',竹北:'謝昀溱',北屯:''};
   const staffMap={};
@@ -524,17 +521,17 @@ function renderStat(){
     const bCases=cases.filter(c=>c.branch===br&&c.staff).sort((a,b)=>(b.keydate||'').localeCompare(a.keydate||''));
     staffMap[br]=bCases[0]?.staff||DEFAULT_STAFF[br]||'';
   });
- 
+
   const html=yrmos.map(ym=>{
     const [y,m]=ym.split('/');
     const mNum=parseInt(m);
     const ml=mNum+'月';
-    // KPI規則：6月以前需有≥1匿名公開；6月起需有≥1全臉公開；兩者都需總計≥3
+    // KPI規則：6月以前需總計≥3 且 (匿名公開≥1 或 全臉公開≥1)；6月起需總計≥3 且 全臉公開≥1
     const isNewKPI = (parseInt(y)>2026) || (parseInt(y)===2026 && mNum>=6);
     const kpiLabel = isNewKPI
       ? '總計≥3 且 全臉公開≥1'
-      : '總計≥3 且 匿名公開≥1';
- 
+      : '總計≥3 且 含匿名公開或全臉公開≥1';
+
     const rows=BRANCHES.map(br=>{
       const bc=cases.filter(c=>c.branch===br&&inMonth(c.keydate,ml));
       const full=bc.filter(c=>c.level==='全臉公開').length;
@@ -543,7 +540,7 @@ function renderStat(){
       const total=bc.length;
       const kpiOk = isNewKPI
         ? (total>=3 && full>=1)
-        : (total>=3 && anon>=1);
+        : (total>=3 && (anon>=1 || full>=1));
       return{ br, staff:staffMap[br]||bc[0]?.staff||'', full, anon, inner, total, kpiOk };
     });
     const tF=rows.reduce((s,r)=>s+r.full,0);
@@ -552,7 +549,7 @@ function renderStat(){
     const tT=rows.reduce((s,r)=>s+r.total,0);
     const allOk=rows.every(r=>r.kpiOk);
     const okCount=rows.filter(r=>r.kpiOk).length;
- 
+
     return `<div class="mwrap">
       <div class="mwrap-h" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
         <span>📅 ${y}年${ml} — 統計（給泰迪協理）</span>
@@ -573,7 +570,7 @@ function renderStat(){
             <td style="text-align:center">
               ${r.kpiOk
                 ? `<span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--green);font-weight:600">✅ 達標</span>`
-                : `<span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--pink)">${r.total<3?'⚠️ 案例不足':'⚠️ '+( isNewKPI?'缺全臉公開':'缺匿名公開')}</span>`
+                : `<span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--pink)">${r.total<3?'⚠️ 案例不足':isNewKPI?'⚠️ 缺全臉公開':'⚠️ 缺匿名或全臉公開'}</span>`
               }
             </td>
           </tr>`).join('')}
@@ -588,13 +585,13 @@ function renderStat(){
   }).join('')||`<div class="empty"><span class="empty-ico">📊</span><p>尚無資料，請先匯入或新增案例</p></div>`;
   document.getElementById('monthly-wrap').innerHTML=html;
 }
- 
+
 /* ── CRUD ── */
 function sf(id,field,val){const c=cases.find(x=>String(x.id)===id);if(!c)return;c[field]=val;save();}
 function setLv(id,level){const c=cases.find(x=>String(x.id)===id);if(!c)return;c.level=level;c.amount=AMAP[level]||0;save();renderCur();}
 function rmCase(id){if(!confirm('確定刪除此案例？'))return;cases=cases.filter(c=>String(c.id)!==id);save();renderCur();toast('已刪除');}
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
- 
+
 /* ── MODAL ── */
 function syncAmt(){const l=document.getElementById('m-level').value;document.getElementById('m-amt').value=AMAP[l]||0;}
 function openAdd(){
@@ -652,7 +649,7 @@ function saveModal(){
   if(curBranch==='__stat')renderStat();else{if(obj.branch===curBranch)renderCur();}
   toast('✓ 案例已儲存');
 }
- 
+
 /* ── FILE IMPORT ── */
 function inferLevel(p){
   if(!p)return'無折扣';
@@ -743,7 +740,7 @@ function doImp(idxs){
   toast(`✓ 已匯入 ${add.length} 筆案例`);
 }
 function closeImp(){document.getElementById('imp-modal').classList.remove('open');}
- 
+
 /* ── EXPORT ── */
 function doExport(){
   const hdrs=['序號','key單日期','手術日期','諮詢師','分院','顧客姓名','顧客代碼','授權等級','折讓金額','術前','術後','已簽肖像權','已拍攝照片','已拍攝動態影片','已通知AKI','狀態','櫃檯開卡','客情資料','素材路徑'];
@@ -759,15 +756,15 @@ function doExport(){
   XLSX.writeFile(wb,`口碑案例_${curBranch==='__stat'?'全部':curBranch}_${new Date().toISOString().slice(0,10)}.xlsx`);
   toast('↓ 匯出完成');
 }
- 
+
 /* ── TOAST ── */
 let tt;
 function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.style.display='block';clearTimeout(tt);tt=setTimeout(()=>el.style.display='none',2800);}
- 
+
 /* ── CLOSE ON OVERLAY ── */
 document.getElementById('modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal();});
 document.getElementById('imp-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeImp();});
- 
+
 /* ── INIT ── */
 buildMonthBar();
 switchBranch('仁愛');
