@@ -218,6 +218,7 @@ code{font-family:var(--mono);font-size:11px;color:var(--text2)}
               <th class="col-cb tdc" title="術前">術前</th>
               <th class="col-cb tdc" title="術後">術後</th>
               <th class="col-no">#</th>
+              <th class="col-date">銷售日</th>
               <th class="col-date">手術日</th>
               <th class="col-name">顧客姓名</th>
               <th class="col-code">顧客代碼</th>
@@ -430,16 +431,19 @@ function setView(v){
 function renderList(rows){
   const tb=document.getElementById('case-tbody');
   if(!rows.length){
-    tb.innerHTML=`<tr><td colspan="13"><div class="empty"><span class="empty-ico">📭</span><p>此分院${curMonth?'在'+curMonth:''}尚無案例</p></div></td></tr>`;
+    tb.innerHTML=`<tr><td colspan="14"><div class="empty"><span class="empty-ico">📭</span><p>此分院${curMonth?'在'+curMonth:''}尚無案例</p></div></td></tr>`;
     return;
   }
   tb.innerHTML=rows.map((c,i)=>{
     const a=c.amount||0;
     const ac=a>=15000?'amt-hi':a>=10000?'amt-md':a>=5000?'amt-lo':'amt-z';
+    const sd=c.saleDate||c.keydate||'';
+    const sdShort=sd.replace('2026/','').replace('2025/','');
     return `<tr>
       <td class="tdc"><input type="checkbox" class="cb" ${c.cbPre?'checked':''} onchange="sf('${c.id}','cbPre',this.checked)" title="術前"></td>
       <td class="tdc"><input type="checkbox" class="cb cb-post" ${c.cbPost?'checked':''} onchange="sf('${c.id}','cbPost',this.checked)" title="術後"></td>
       <td style="font-family:var(--mono);color:var(--text3);font-size:10px">${i+1}</td>
+      <td style="font-family:var(--mono);font-size:11px;color:var(--text2);white-space:nowrap">${sdShort}</td>
       <td><input class="td-inp" value="${esc(c.surgery||'')}" placeholder="—" onchange="sf('${c.id}','surgery',this.value)" style="width:82px"></td>
       <td style="font-weight:500">${esc(c.name)}</td>
       <td><code>${esc(c.code||'—')}</code></td>
@@ -734,7 +738,7 @@ function impSel(){
 }
 function doImp(idxs){
   const add=idxs.map(i=>{const r=parsedRows[i];return{
-    id:Date.now()+Math.random(),keydate:r.date,surgery:'',staff:r.staff,branch:r.branch,
+    id:Date.now()+Math.random(),saleDate:r.date,keydate:r.date,surgery:'',staff:r.staff,branch:r.branch,
     name:r.name,code:r.code,level:r.level,amount:r.amount,
     status:'',card:'',story:'',path:'',portrait:false,photo:false,video:false,aki:false,cbPre:false,cbPost:false
   };});
