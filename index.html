@@ -734,7 +734,7 @@ function handleFile(file){
         else ds=String(rd).split(' ')[0].replace(/-/g,'/');
         const product=String(r[pC]||'').trim();
         const noDiscount=product.includes('<諮詢師無回饋>');
-        const level=noDiscount?'無折扣':inferLevel(product);
+        const level=inferLevel(product);
         const branch=inferBranch(String(r[sC]||'').trim())||(curBranch==='__stat'?'仁愛':curBranch);
         const rawSt=String(r[Math.max(stC,0)]||'').trim();
         const staffParts=rawSt.split(/[\n\\n]/).map(s=>s.split('-')[0].trim()).filter(Boolean);
