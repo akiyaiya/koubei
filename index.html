@@ -139,61 +139,26 @@ code{font-family:var(--mono);font-size:11px;color:var(--text2)}
 .empty{padding:44px 20px;text-align:center;color:var(--text3)}
 .empty-ico{font-size:30px;margin-bottom:10px;display:block}
 .empty p{font-size:12px}
-/* 設定頁 */
-.setup-box{max-width:600px;margin:40px auto;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:28px 32px;box-shadow:0 2px 12px rgba(0,0,0,.07)}
-.setup-box h2{font-size:16px;font-weight:700;color:var(--accent);margin-bottom:6px}
-.setup-box p{font-size:12px;color:var(--text2);margin-bottom:18px;line-height:1.7}
-.setup-box label{font-size:11px;font-weight:600;color:var(--text2);display:block;margin-bottom:5px}
-.setup-box input{width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:6px;font-size:13px;font-family:'Noto Sans TC',sans-serif;margin-bottom:14px}
-.setup-box input:focus{outline:none;border-color:var(--accent)}
-.setup-steps{background:var(--bg);border-radius:8px;padding:14px 16px;margin-bottom:18px;font-size:12px;color:var(--text2);line-height:2}
-.sync-banner{background:var(--blue-bg);border:1px solid #B8CEDE;border-radius:6px;padding:7px 13px;font-size:11px;color:var(--blue);display:flex;align-items:center;gap:7px}
-.spin{display:inline-block;animation:spin 1s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
 ::-webkit-scrollbar{width:5px;height:5px}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:10px}
 </style>
 </head>
 <body>
 
-<!-- ══════════════ SETUP SCREEN ══════════════ -->
-<div id="setup-screen" style="display:none;padding:20px">
-  <div class="setup-box">
-    <h2>🔧 設定 Google Sheets 連線</h2>
-    <p>此系統使用 Google Sheets 作為共用資料庫，讓所有組員看到相同資料。<br>請依照以下步驟完成一次性設定：</p>
-    <div class="setup-steps">
-      <strong>步驟一：</strong>開啟 <a href="https://sheets.google.com" target="_blank" style="color:var(--accent)">Google Sheets</a>，建立新試算表，記下網址中的 <code>spreadsheetId</code><br>
-      （網址格式：<code>docs.google.com/spreadsheets/d/<strong>這裡是ID</strong>/edit</code>）<br><br>
-      <strong>步驟二：</strong>點選試算表的「擴充功能」→「Apps Script」，貼上說明文件中提供的 Script 程式碼，儲存後點「部署」→「新增部署」→「網頁應用程式」，存取權選「任何人」，複製部署網址<br><br>
-      <strong>步驟三：</strong>將兩個值填入下方並儲存
-    </div>
-    <label>Apps Script 部署網址（Web App URL）</label>
-    <input type="text" id="setup-url" placeholder="https://script.google.com/macros/s/xxxxx/exec">
-    <label>Google Sheets ID</label>
-    <input type="text" id="setup-sid" placeholder="1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgVE2upms">
-    <button class="btn btn-primary" style="width:100%;justify-content:center;padding:10px" onclick="saveSetup()">✓ 儲存設定並連線</button>
-    <div style="margin-top:12px;font-size:11px;color:var(--text3);text-align:center">
-      設定只需做一次，之後開啟網頁會自動連線
-    </div>
-  </div>
-</div>
-
 <!-- ══════════════ MAIN APP ══════════════ -->
-<div id="main-app" style="display:none">
+<div id="main-app">
 
 <div class="header">
   <div class="hlogo">
     <span style="font-size:17px">🏥</span>
     <span class="htitle">【口碑案例優化】各店案例管理</span>
-    <span class="hsub" id="save-lbl">● 連線中…</span>
+    <span class="hsub" id="save-lbl">● 本機儲存</span>
   </div>
   <div class="hright">
     <input type="file" id="xls-file" accept=".xls,.xlsx,.csv" style="display:none" onchange="handleFile(this.files[0])">
     <button class="btn" onclick="document.getElementById('xls-file').click()">📥 匯入報表</button>
     <button class="btn btn-primary" onclick="openAdd()">＋ 新增案例</button>
     <button class="btn" onclick="doExport()">↓ 匯出 XLSX</button>
-    <button class="btn btn-icon" title="重新整理" onclick="syncFromSheets()">🔄</button>
-    <button class="btn btn-icon" title="重設連線" onclick="resetSetup()" style="font-size:10px">⚙</button>
   </div>
 </div>
 
@@ -222,7 +187,6 @@ code{font-family:var(--mono);font-size:11px;color:var(--text2)}
       <input type="text" id="fl-search" placeholder="搜尋姓名 / 代碼 / 諮詢師" oninput="renderCur()" style="font-size:12px;padding:5px 9px;border:1px solid var(--border);border-radius:5px;width:175px;background:var(--surface)">
     </div>
     <div class="tr">
-      <span id="sync-status" class="sync-banner" style="display:none"><span class="spin">⏳</span> 同步中…</span>
       <span id="count-lbl" style="font-size:11px;color:var(--text3)"></span>
     </div>
   </div>
@@ -305,26 +269,26 @@ code{font-family:var(--mono);font-size:11px;color:var(--text2)}
         <label><input type="checkbox" class="cb" id="m-p3"> 已拍攝動態影片</label>
         <label><input type="checkbox" class="cb" id="m-p4"> 已通知 AKI</label>
       </div>
-      <div class="sec-lbl">狀態與備註</div>
+      <div class="sec-lbl">其他資訊</div>
       <div class="fgrid">
-        <div class="fg"><label>狀態</label><input type="text" id="m-status" placeholder="例：術前、術後都拍完了"></div>
+        <div class="fg"><label>狀態</label><input type="text" id="m-status" placeholder="例：待拍攝"></div>
         <div class="fg"><label>櫃檯開卡</label><input type="text" id="m-card" placeholder="例：已開卡"></div>
-        <div class="fg fg-full"><label>客情資料 / 故事亮點</label><textarea id="m-story" placeholder="請填寫客人職業、年齡、生活習慣，以及痛點與術後改變"></textarea></div>
-        <div class="fg fg-full"><label>素材存放路徑</label><input type="text" id="m-path" placeholder="資料夾路徑或雲端連結"></div>
+        <div class="fg fg-full"><label>客情資料</label><textarea id="m-story" placeholder="故事亮點、備註…"></textarea></div>
+        <div class="fg fg-full"><label>素材路徑</label><input type="text" id="m-path" placeholder="例：Google Drive 連結"></div>
       </div>
     </div>
     <div class="modal-f">
       <button class="btn" onclick="closeModal()">取消</button>
-      <button class="btn btn-primary" onclick="saveModal()">儲存案例</button>
+      <button class="btn btn-primary" onclick="saveModal()">儲存</button>
     </div>
   </div>
 </div>
 
 <!-- IMPORT MODAL -->
 <div class="overlay" id="imp-modal">
-  <div class="modal" style="max-width:840px">
+  <div class="modal" style="max-width:700px">
     <div class="modal-h">
-      <span class="modal-t">匯入報表預覽</span>
+      <span class="modal-t">📥 匯入報表預覽</span>
       <button class="btn btn-icon" onclick="closeImp()">✕</button>
     </div>
     <div class="modal-b">
@@ -359,29 +323,9 @@ code{font-family:var(--mono);font-size:11px;color:var(--text2)}
 
 <script>
 // ══════════════════════════════════════════
-//  CONFIG — 從 localStorage 讀取（由設定頁填入）
-// ══════════════════════════════════════════
-const CFG_KEY = 'koubei_gs_config';
-
-function getConfig(){
-  try{ return JSON.parse(localStorage.getItem(CFG_KEY))||{}; }catch(e){ return {}; }
-}
-function saveSetup(){
-  const url = document.getElementById('setup-url').value.trim();
-  const sid = document.getElementById('setup-sid').value.trim();
-  if(!url||!sid){ alert('請填寫兩個欄位'); return; }
-  localStorage.setItem(CFG_KEY, JSON.stringify({url, sid}));
-  init();
-}
-function resetSetup(){
-  if(!confirm('確定要重設連線設定？')) return;
-  localStorage.removeItem(CFG_KEY);
-  location.reload();
-}
-
-// ══════════════════════════════════════════
 //  CONSTANTS
 // ══════════════════════════════════════════
+const STORAGE_KEY = 'koubei_v3';
 const BRANCHES=['仁愛','桃園','向上','巨蛋','竹北','北屯'];
 const AMAP={'全臉公開':15000,'匿名公開':10000,'院內公開':5000,'無折扣':0};
 const MONTHS=['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
@@ -389,51 +333,15 @@ const MONTHS=['1月','2月','3月','4月','5月','6月','7月','8月','9月','10
 let cases=[], curBranch='仁愛', curMonth='', curView='list', editId=null, parsedRows=[];
 
 // ══════════════════════════════════════════
-//  GOOGLE SHEETS API (via Apps Script)
+//  LOCALSTORAGE
 // ══════════════════════════════════════════
-async function apiCall(action, payload={}){
-  const cfg = getConfig();
-  const url = cfg.url;
-  const body = JSON.stringify({action, sheetId: cfg.sid, ...payload});
-  const res = await fetch(url, {
-    method:'POST',
-    body,
-    headers:{'Content-Type':'text/plain'} // Apps Script needs this
-  });
-  const json = await res.json();
-  if(json.error) throw new Error(json.error);
-  return json;
+function loadCases(){
+  try{ return JSON.parse(localStorage.getItem(STORAGE_KEY))||[]; }catch(e){ return []; }
 }
-
-async function syncFromSheets(){
-  showSyncing(true);
-  try{
-    const data = await apiCall('getAll');
-    cases = data.cases || [];
-    updateBadges();
-    buildMonthBar();
-    if(curBranch==='__stat') renderStat(); else renderCur();
-    setSaveLabel('● 已同步 Google Sheets', '#1B5C3A');
-  }catch(e){
-    setSaveLabel('⚠ 同步失敗：'+e.message, '#C0394A');
-    toast('同步失敗：'+e.message);
-  }finally{ showSyncing(false); }
-}
-
-async function pushToSheets(action, payload){
-  setSaveLabel('● 儲存中…', '#7A5800');
-  try{
-    await apiCall(action, payload);
-    setSaveLabel('● 已儲存至 Google Sheets', '#1B5C3A');
-  }catch(e){
-    setSaveLabel('⚠ 儲存失敗：'+e.message, '#C0394A');
-    toast('儲存失敗，請重試');
-    throw e;
-  }
-}
-
-function showSyncing(on){
-  document.getElementById('sync-status').style.display = on?'flex':'none';
+function saveCases(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(cases));
+  setSaveLabel('● 本機已儲存', '#1B5C3A');
+  setTimeout(()=>setSaveLabel('● 本機儲存',''), 1500);
 }
 function setSaveLabel(txt, color){
   const el=document.getElementById('save-lbl');
@@ -444,17 +352,9 @@ function setSaveLabel(txt, color){
 //  INIT
 // ══════════════════════════════════════════
 function init(){
-  const cfg = getConfig();
-  if(!cfg.url || !cfg.sid){
-    document.getElementById('setup-screen').style.display='block';
-    document.getElementById('main-app').style.display='none';
-    return;
-  }
-  document.getElementById('setup-screen').style.display='none';
-  document.getElementById('main-app').style.display='block';
+  cases = loadCases();
   buildMonthBar();
   switchBranch('仁愛');
-  syncFromSheets();
 }
 
 // ══════════════════════════════════════════
@@ -504,7 +404,7 @@ function getFiltered(){
   const sf=(document.getElementById('fl-search').value||'').toLowerCase();
   return cases.filter(c=>{
     if(c.branch!==curBranch) return false;
-    if(curMonth&&!inMonth(c.keydate,parseInt(curMonth),new Date().getFullYear())) return false;
+    if(curMonth&&!inMonth(c.saleDate||c.keydate,parseInt(curMonth),new Date().getFullYear())) return false;
     if(lf&&c.level!==lf) return false;
     if(sf&&!c.name.toLowerCase().includes(sf)&&!c.code.toLowerCase().includes(sf)&&!(c.staff||'').toLowerCase().includes(sf)) return false;
     return true;
@@ -548,23 +448,23 @@ function renderList(rows){
     const sd=c.saleDate||c.keydate||'';
     const sdShort=sd.replace('2026/','').replace('2025/','');
     return `<tr>
-      <td class="tdc"><input type="checkbox" class="cb" ${c.cbPre?'checked':''} onchange="sfRemote('${c.id}','cbPre',this.checked)" title="術前"></td>
-      <td class="tdc"><input type="checkbox" class="cb cb-post" ${c.cbPost?'checked':''} onchange="sfRemote('${c.id}','cbPost',this.checked)" title="術後"></td>
+      <td class="tdc"><input type="checkbox" class="cb" ${c.cbPre?'checked':''} onchange="sfLocal('${c.id}','cbPre',this.checked)" title="術前"></td>
+      <td class="tdc"><input type="checkbox" class="cb cb-post" ${c.cbPost?'checked':''} onchange="sfLocal('${c.id}','cbPost',this.checked)" title="術後"></td>
       <td style="font-family:var(--mono);color:var(--text3);font-size:10px">${i+1}</td>
       <td style="font-family:var(--mono);font-size:11px;color:var(--text2);white-space:nowrap">${sdShort}</td>
-      <td><input class="td-inp" value="${esc(c.surgery||'')}" placeholder="—" onchange="sfRemote('${c.id}','surgery',this.value)" style="width:82px"></td>
+      <td><input class="td-inp" value="${esc(c.surgery||'')}" placeholder="—" onchange="sfLocal('${c.id}','surgery',this.value)" style="width:82px"></td>
       <td style="font-weight:500">${esc(c.name)}</td>
       <td><code>${esc(c.code||'—')}</code></td>
       <td>
-        <select class="lsel" onchange="setLvRemote('${c.id}',this.value)">
+        <select class="lsel" onchange="setLvLocal('${c.id}',this.value)">
           ${['全臉公開','匿名公開','院內公開','無折扣'].map(l=>`<option value="${l}"${l===c.level?' selected':''}>${l}</option>`).join('')}
         </select>
       </td>
       <td class="tdr"><span class="amt ${ac}">$${a.toLocaleString()}</span></td>
       <td style="font-size:11px;color:var(--text2)">${c.branch}</td>
       <td style="white-space:normal;max-width:90px;font-size:11px">${esc(c.staff||'—')}</td>
-      <td><input class="td-inp" value="${esc(c.status||'')}" placeholder="—" onchange="sfRemote('${c.id}','status',this.value)" style="width:94px"></td>
-      <td><input class="td-inp" value="${esc(c.card||'')}" placeholder="—" onchange="sfRemote('${c.id}','card',this.value)" style="width:70px"></td>
+      <td><input class="td-inp" value="${esc(c.status||'')}" placeholder="—" onchange="sfLocal('${c.id}','status',this.value)" style="width:94px"></td>
+      <td><input class="td-inp" value="${esc(c.card||'')}" placeholder="—" onchange="sfLocal('${c.id}','card',this.value)" style="width:70px"></td>
       <td style="text-align:right;white-space:nowrap">
         <button class="btn btn-icon btn-sm" onclick="openEdit('${c.id}')">✏</button>
         <button class="btn btn-icon btn-sm btn-danger" onclick="rmCase('${c.id}')">✕</button>
@@ -593,16 +493,16 @@ function renderCards(rows){
         <div class="dc-row"><span class="dc-lbl">諮詢師</span><span class="dc-val">${esc(c.staff||'—')}</span></div>
         <div class="dc-row"><span class="dc-lbl">顧客姓名</span><span class="dc-val" style="font-weight:500">${esc(c.name)}</span></div>
         <div class="dc-row"><span class="dc-lbl">顧客代碼</span><span class="dc-val"><code>${esc(c.code||'—')}</code></span></div>
-        <div class="dc-row"><span class="dc-lbl">手術日期</span><span class="dc-val"><input value="${esc(c.surgery||'')}" placeholder="點擊填寫" onchange="sfRemote('${c.id}','surgery',this.value)" style="border:none;background:transparent;font-size:12px;font-family:'Noto Sans TC',sans-serif;color:var(--text);width:100%;outline:none"></span></div>
+        <div class="dc-row"><span class="dc-lbl">手術日期</span><span class="dc-val"><input value="${esc(c.surgery||'')}" placeholder="點擊填寫" onchange="sfLocal('${c.id}','surgery',this.value)" style="border:none;background:transparent;font-size:12px;font-family:'Noto Sans TC',sans-serif;color:var(--text);width:100%;outline:none"></span></div>
         <div class="dc-row"><span class="dc-lbl">術前素材</span>
           <div class="dc-val"><div class="dc-ck">
-            <label><input type="checkbox" class="cb" ${c.portrait?'checked':''} onchange="sfRemote('${c.id}','portrait',this.checked)"> 已簽肖像權</label>
-            <label><input type="checkbox" class="cb" ${c.photo?'checked':''} onchange="sfRemote('${c.id}','photo',this.checked)"> 已拍攝照片</label>
-            <label><input type="checkbox" class="cb" ${c.video?'checked':''} onchange="sfRemote('${c.id}','video',this.checked)"> 已拍攝動態影片</label>
-            <label><input type="checkbox" class="cb" ${c.aki?'checked':''} onchange="sfRemote('${c.id}','aki',this.checked)"> 已通知 AKI</label>
+            <label><input type="checkbox" class="cb" ${c.portrait?'checked':''} onchange="sfLocal('${c.id}','portrait',this.checked)"> 已簽肖像權</label>
+            <label><input type="checkbox" class="cb" ${c.photo?'checked':''} onchange="sfLocal('${c.id}','photo',this.checked)"> 已拍攝照片</label>
+            <label><input type="checkbox" class="cb" ${c.video?'checked':''} onchange="sfLocal('${c.id}','video',this.checked)"> 已拍攝動態影片</label>
+            <label><input type="checkbox" class="cb" ${c.aki?'checked':''} onchange="sfLocal('${c.id}','aki',this.checked)"> 已通知 AKI</label>
           </div></div>
         </div>
-        <div class="dc-row"><span class="dc-lbl">客情資料</span><span class="dc-val"><textarea placeholder="點擊填寫故事亮點…" onchange="sfRemote('${c.id}','story',this.value)" style="border:none;background:transparent;font-size:11px;font-family:'Noto Sans TC',sans-serif;color:var(--text);width:100%;outline:none;resize:none;min-height:56px;line-height:1.6">${esc(c.story||'')}</textarea></span></div>
+        <div class="dc-row"><span class="dc-lbl">客情資料</span><span class="dc-val"><textarea placeholder="點擊填寫故事亮點…" onchange="sfLocal('${c.id}','story',this.value)" style="border:none;background:transparent;font-size:11px;font-family:'Noto Sans TC',sans-serif;color:var(--text);width:100%;outline:none;resize:none;min-height:56px;line-height:1.6">${esc(c.story||'')}</textarea></span></div>
       </div>
       <div class="dc-foot">
         <button class="btn btn-sm" onclick="openEdit('${c.id}')">✏ 編輯</button>
@@ -647,13 +547,13 @@ function renderStat(){
     const isNewKPI=(parseInt(y)>2026)||(parseInt(y)===2026&&mNum>=6);
     const kpiLabel=isNewKPI?'總計≥3 且 全臉公開≥1':'總計≥3 且 含匿名公開或全臉公開≥1';
     const rows=BRANCHES.map(br=>{
-      const bc=cases.filter(c=>c.branch===br&&inMonth((c.saleDate||c.keydate||''),mNum,parseInt(y)));
+      const bc=cases.filter(c=>c.branch===br&&inMonth(c.saleDate||c.keydate,mNum,parseInt(y)));
       const full=bc.filter(c=>c.level==='全臉公開').length;
       const anon=bc.filter(c=>c.level==='匿名公開').length;
       const inner=bc.filter(c=>c.level==='院內公開').length;
       const total=bc.length;
-      const kpiOk=isNewKPI?(total>=3&&full>=1):(total>=3&&(anon>=1||full>=1));
-      return{br,staff:staffMap[br]||bc[0]?.staff||'',full,anon,inner,total,kpiOk};
+      const kpiOk=isNewKPI?(total>=3&&full>=1):(total>=3&&(full>=1||anon>=1));
+      return {br,staff:staffMap[br]||'',full,anon,inner,total,kpiOk};
     });
     const tF=rows.reduce((s,r)=>s+r.full,0);
     const tA=rows.reduce((s,r)=>s+r.anon,0);
@@ -685,7 +585,7 @@ function renderStat(){
             </td>
           </tr>`).join('')}
           <tr class="mtotal">
-            <td colspan="2"> ${ml}總計</td>
+            <td colspan="2">${ml}總計</td>
             <td>${tF}</td><td>${tA}</td><td>${tI}</td><td>${tT}</td>
             <td style="text-align:center;font-size:11px">${okCount}/${BRANCHES.length} 達標</td>
           </tr>
@@ -697,30 +597,27 @@ function renderStat(){
 }
 
 // ══════════════════════════════════════════
-//  CRUD (remote)
+//  CRUD (local)
 // ══════════════════════════════════════════
-async function sfRemote(id, field, val){
+function sfLocal(id, field, val){
   const c=cases.find(x=>String(x.id)===id); if(!c) return;
   c[field]=val;
-  renderCur();
-  try{ await pushToSheets('update', {id, field, value: val}); }
-  catch(e){ /* label already updated */ }
+  saveCases();
 }
 
-async function setLvRemote(id, level){
+function setLvLocal(id, level){
   const c=cases.find(x=>String(x.id)===id); if(!c) return;
   c.level=level; c.amount=AMAP[level]||0;
   renderCur();
-  try{ await pushToSheets('update', {id, field:'level', value:level}); await pushToSheets('update', {id, field:'amount', value:c.amount}); }
-  catch(e){}
+  saveCases();
 }
 
-async function rmCase(id){
+function rmCase(id){
   if(!confirm('確定刪除此案例？')) return;
   cases=cases.filter(c=>String(c.id)!==id);
   updateBadges(); renderCur();
-  try{ await pushToSheets('delete', {id}); toast('已刪除'); }
-  catch(e){ toast('刪除失敗，請重試'); await syncFromSheets(); }
+  saveCases();
+  toast('已刪除');
 }
 
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
@@ -765,7 +662,7 @@ function openEdit(id){
 
 function closeModal(){document.getElementById('modal').classList.remove('open'); editId=null;}
 
-async function saveModal(){
+function saveModal(){
   const name=document.getElementById('m-name').value.trim();
   const kd=document.getElementById('m-kd').value;
   if(!name||!kd){toast('請填寫 key 單日期與顧客姓名');return;}
@@ -784,18 +681,14 @@ async function saveModal(){
   };
   if(editId){
     const idx=cases.findIndex(c=>String(c.id)===editId);
-    if(idx>=0){const old=cases[idx];obj.cbPre=old.cbPre;obj.cbPost=old.cbPost;cases[idx]=obj;}
+    if(idx>=0){const old=cases[idx];obj.cbPre=old.cbPre;obj.cbPost=old.cbPost;obj.saleDate=old.saleDate;cases[idx]=obj;}
   } else {
     cases.push(obj);
   }
   updateBadges(); closeModal();
   if(curBranch==='__stat') renderStat(); else if(obj.branch===curBranch) renderCur();
-  try{
-    await pushToSheets(editId?'upsert':'upsert', {case: obj});
-    toast('✓ 案例已儲存至 Google Sheets');
-  } catch(e){
-    toast('儲存失敗，本機已更新但未同步');
-  }
+  saveCases();
+  toast('✓ 案例已儲存');
 }
 
 // ══════════════════════════════════════════
@@ -884,7 +777,7 @@ function impSel(){
   if(!sel.length){toast('請至少勾選一筆');return;} doImp(sel);
 }
 
-async function doImp(idxs){
+function doImp(idxs){
   const add=idxs.map(i=>{const r=parsedRows[i];return{
     id: Date.now()+''+Math.floor(Math.random()*100000)+i,
     saleDate:r.date, keydate:r.date, surgery:'', staff:r.staff, branch:r.branch,
@@ -893,16 +786,10 @@ async function doImp(idxs){
     portrait:false, photo:false, video:false, aki:false, cbPre:false, cbPost:false
   };});
   cases.push(...add);
+  saveCases();
   updateBadges(); closeImp();
   if(curBranch==='__stat') renderStat(); else renderCur();
-  try{
-    await pushToSheets('batchUpsert', {cases: add});
-    toast(`✓ 已匯入 ${add.length} 筆案例至 Google Sheets`);
-  } catch(e){
-    toast(`匯入失敗，請重試`);
-    cases = cases.filter(c=>!add.find(a=>a.id===c.id));
-    renderCur();
-  }
+  toast(`✓ 已匯入 ${add.length} 筆案例`);
 }
 
 function closeImp(){document.getElementById('imp-modal').classList.remove('open');}
