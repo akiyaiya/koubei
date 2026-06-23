@@ -733,12 +733,13 @@ function handleFile(file){
         if(typeof rd==='number'){const d=XLSX.SSF.parse_date_code(rd);ds=`${d.y}/${String(d.m).padStart(2,'0')}/${String(d.d).padStart(2,'0')}`;}
         else ds=String(rd).split(' ')[0].replace(/-/g,'/');
         const product=String(r[pC]||'').trim();
-        const level=inferLevel(product);
+        const noDiscount=product.includes('<諮詢師無回饋>');
+        const level=noDiscount?'無折扣':inferLevel(product);
         const branch=inferBranch(String(r[sC]||'').trim())||(curBranch==='__stat'?'仁愛':curBranch);
         const rawSt=String(r[Math.max(stC,0)]||'').trim();
         const staffParts=rawSt.split(/[\n\\n]/).map(s=>s.split('-')[0].trim()).filter(Boolean);
         const staff=[...new Set(staffParts)].join('、');
-        if(name&&ds) parsedRows.push({date:ds,name,code,level,amount:AMAP[level]||0,branch,staff});
+        if(name&&ds) parsedRows.push({date:ds,name,code,level,amount:noDiscount?0:(AMAP[level]||0),branch,staff});
       }
       if(!parsedRows.length){toast('解析到 0 筆');return;}
       showImpModal();
