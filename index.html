@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+	<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
@@ -532,13 +532,11 @@ function renderStat(){
     return p.length>=2?`${p[0]}/${p[1].padStart(2,'0')}`:null;
   }).filter(Boolean))].sort().reverse();
 
-  const FIXED_STAFF={向上:'王喬儀',竹北:'謝昀溱'};
+  const FIXED_STAFF={仁愛:'蔡忻宸',桃園:'陳涵',向上:'王喬儀',巨蛋:'林采蓁',北屯:'劉芳瑜'};
+  function getZhubeiStaff(y,m){
+    return (parseInt(y)>2026||(parseInt(y)===2026&&parseInt(m)>=6))?'龔美慈':'謝昀溱';
+  }
   const staffMap={};
-  BRANCHES.forEach(br=>{
-    if(FIXED_STAFF[br]){ staffMap[br]=FIXED_STAFF[br]; return; }
-    const bCases=cases.filter(c=>c.branch===br&&c.staff).sort((a,b)=>(b.keydate||'').localeCompare(a.keydate||''));
-    staffMap[br]=bCases[0]?.staff||'';
-  });
 
   const html=yrmos.map(ym=>{
     const [y,m]=ym.split('/');
@@ -553,7 +551,8 @@ function renderStat(){
       const inner=bc.filter(c=>c.level==='院內公開').length;
       const total=bc.length;
       const kpiOk=isNewKPI?(total>=3&&full>=1):(total>=3&&(full>=1||anon>=1));
-      return {br,staff:staffMap[br]||'',full,anon,inner,total,kpiOk};
+      const staff=br==='竹北'?getZhubeiStaff(y,mNum):(FIXED_STAFF[br]||'');
+      return {br,staff,full,anon,inner,total,kpiOk};
     });
     const tF=rows.reduce((s,r)=>s+r.full,0);
     const tA=rows.reduce((s,r)=>s+r.anon,0);
