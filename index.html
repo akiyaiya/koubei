@@ -1,4 +1,4 @@
-	<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
@@ -336,12 +336,14 @@ let cases=[], curBranch='仁愛', curMonth='', curView='list', editId=null, pars
 //  LOCALSTORAGE
 // ══════════════════════════════════════════
 function loadCases(){
-  try{ return JSON.parse(localStorage.getItem(STORAGE_KEY))||[]; }catch(e){ return []; }
+  // 每次開啟網頁都從空白開始，不讀取先前資料
+  try{ localStorage.removeItem(STORAGE_KEY); }catch(e){}
+  return [];
 }
 function saveCases(){
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(cases));
-  setSaveLabel('● 本機已儲存', '#1B5C3A');
-  setTimeout(()=>setSaveLabel('● 本機儲存',''), 1500);
+  // 不寫入 localStorage，資料僅保留在本次瀏覽記憶體中，重新整理即清空
+  setSaveLabel('● 暫存中（重整即清空）', '#B8860B');
+  setTimeout(()=>setSaveLabel('● 暫存中（不會保存）','#B8860B'), 1500);
 }
 function setSaveLabel(txt, color){
   const el=document.getElementById('save-lbl');
