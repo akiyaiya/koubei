@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>【口碑案例優化】各店案例管理系統</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap');
 :root {
@@ -188,6 +189,7 @@ code{font-family:var(--mono);font-size:11px;color:var(--text2)}
     </div>
     <div class="tr">
       <span id="count-lbl" style="font-size:11px;color:var(--text3)"></span>
+      <button class="btn btn-sm" onclick="exportCaseShot()">📸 下載本頁截圖(jpg)</button>
     </div>
   </div>
   <div class="main-content">
@@ -565,8 +567,11 @@ function renderStat(){
     return `<div class="mwrap">
       <div class="mwrap-h" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
         <span>📅 ${y}年${ml} — 統計（給泰迪協理）</span>
-        <span style="font-size:11px;font-weight:400;color:var(--pink);background:var(--surface);padding:3px 10px;border-radius:20px;border:1px solid var(--pink-border)">
-          KPI：${kpiLabel} &nbsp;｜&nbsp; 達標 ${okCount}／${BRANCHES.length} 間${allOk?'&nbsp;🎉':''}
+        <span style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <span style="font-size:11px;font-weight:400;color:var(--pink);background:var(--surface);padding:3px 10px;border-radius:20px;border:1px solid var(--pink-border)">
+            KPI：${kpiLabel} &nbsp;｜&nbsp; 達標 ${okCount}／${BRANCHES.length} 間${allOk?'&nbsp;🎉':''}
+          </span>
+          <button class="btn btn-sm" onclick="exportShotEl(this.closest('.mwrap'),'${y}年${ml}各院統計')">📸 下載(jpg)</button>
         </span>
       </div>
       <table class="mtable">
@@ -819,6 +824,34 @@ function doExport(){
 // ══════════════════════════════════════════
 let tt;
 function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.style.display='block';clearTimeout(tt);tt=setTimeout(()=>el.style.display='none',2800);}
+
+// ══════════════════════════════════════════
+//  EXPORT SCREENSHOT (JPG)
+// ══════════════════════════════════════════
+function exportShotEl(el, filename){
+  if(!el){ toast('找不到要截圖的內容'); return; }
+  if(typeof html2canvas==='undefined'){ toast('截圖功能尚未載入，請稍候再試'); return; }
+  toast('擷取中…');
+  html2canvas(el, {backgroundColor:'#ffffff', scale:2, useCORS:true}).then(canvas=>{
+    const a=document.createElement('a');
+    a.download = filename.replace(/[\\/:*?"<>|]/g,'') + '.jpg';
+    a.href = canvas.toDataURL('image/jpeg', 0.95);
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    toast('已下載 ' + a.download);
+  }).catch(()=>toast('截圖失敗，請重試'));
+}
+
+function exportCaseShot(){
+  const branch = curBranch==='__stat' ? '' : curBranch;
+  const month = curMonth || '全部';
+  const filename = `${branch}${month}明細`;
+  const target = curView==='list'
+    ? document.querySelector('#view-list .table-wrap')
+    : document.getElementById('card-grid');
+  exportShotEl(target, filename);
+}
 document.getElementById('modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal();});
 document.getElementById('imp-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeImp();});
 
