@@ -667,7 +667,7 @@ function renderStat(){
 function getStaffFullBoard(){
   const map={};
   cases.forEach(c=>{
-    const names=(c.staff||'').split(/[、,\/]/).map(s=>s.trim()).filter(Boolean);
+    const names=(c.staff||'').split(/[、,\/]/).map(s=>s.trim()).filter(Boolean).filter(s=>!isNonHumanStaff(s));
     names.forEach(n=>{
       if(!map[n]) map[n]={staff:n,full:0,total:0,branchCount:{}};
       map[n].total++;
@@ -813,6 +813,13 @@ function inferBranch(sc){
   return m[sc]||'';
 }
 
+function isNonHumanStaff(name){
+  if(!name) return true;
+  if(/[A-Za-z]{2,}\d{2,}/.test(name)) return true; // 例：ComeProDG012
+  if(name.includes('行銷')) return true; // 例：好的行銷
+  return false;
+}
+
 function handleFile(file){
   if(!file)return;
   const reader=new FileReader();
@@ -844,7 +851,7 @@ function handleFile(file){
         const level=inferLevel(product);
         const branch=inferBranch(String(r[sC]||'').trim())||(curBranch==='__stat'?'仁愛':curBranch);
         const rawSt=String(r[Math.max(stC,0)]||'').trim();
-        const staffParts=rawSt.split(/[\n\\n]/).map(s=>s.split('-')[0].trim()).filter(Boolean);
+        const staffParts=rawSt.split(/[\n\\n]/).map(s=>s.split('-')[0].trim()).filter(Boolean).filter(s=>!isNonHumanStaff(s));
         const staff=[...new Set(staffParts)].join('、');
         if(name&&ds) parsedRows.push({date:ds,name,code,level,amount:noDiscount?0:(AMAP[level]||0),branch,staff});
       }
