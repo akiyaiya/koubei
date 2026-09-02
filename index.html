@@ -7,7 +7,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@600;700;900&family=Zhi+Mang+Xing&family=DM+Mono:wght@400;500&display=swap');
 :root {
 --bg:#F4F2ED; --surface:#FFF; --surface2:#F9F7F3; --border:#DDD8CF; --border2:#C8C2B5;
 --text:#1C1A17; --text2:#5C5750; --text3:#9C9690;
@@ -17,6 +17,8 @@
 --amber:#7A5800; --amber-bg:#FEF8EC;
 --green:#1B5C3A; --green-bg:#EEF7F2;
 --mono:'DM Mono',monospace;
+--brand-red:#EC3F43; --brand-red-dark:#C22026; --brand-gold:#D9A66C;
+--brand-rose-bg:#FFF0F2; --brand-rose-border:#F3C9CE;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{font-size:13px}
@@ -142,6 +144,38 @@ code{font-family:var(--mono);font-size:11px;color:var(--text2)}
 .empty p{font-size:12px}
 ::-webkit-scrollbar{width:5px;height:5px}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:10px}
+
+/* 戰情榜 */
+.btab.stab.board-tab{color:var(--brand-red-dark)}
+.btab.stab.board-tab.active{color:var(--brand-red);border-bottom-color:var(--brand-red)}
+.board-toolbar-outer{display:flex;justify-content:flex-end;margin-bottom:12px}
+.board-wrap{background:#fff;border:1px solid var(--brand-rose-border);border-radius:16px;overflow:hidden;box-shadow:0 6px 28px rgba(236,63,67,.10)}
+.board-head{padding:30px 28px 24px;background:linear-gradient(120deg,var(--brand-red-dark) 0%,var(--brand-red) 45%,var(--brand-gold) 135%);color:#fff;position:relative;overflow:hidden}
+.board-head::after{content:'';position:absolute;right:-40px;top:-60px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.18),transparent 70%)}
+.board-head-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;opacity:.85;margin-bottom:8px}
+.board-head-title{font-family:'Noto Serif TC',serif;font-weight:900;font-size:22px;letter-spacing:.02em;margin-bottom:8px;text-shadow:0 2px 10px rgba(0,0,0,.12);line-height:1.4}
+.board-head-sub{font-size:12px;opacity:.95;font-weight:500;line-height:1.6}
+.board-head-note{font-family:'Zhi Mang Xing','Noto Sans TC',sans-serif;font-size:19px;line-height:1.75;opacity:.97;margin-top:6px;transform:rotate(-0.6deg);display:inline-block}
+.board-body{padding:22px 24px 8px}
+.board-row{display:flex;align-items:center;gap:14px;padding:13px 16px;border-radius:12px;margin-bottom:9px;background:var(--surface2);border:1px solid var(--border)}
+.board-row.top1{background:linear-gradient(90deg,#FFF3D6,#FFFDF7);border-color:#E8C877;box-shadow:0 3px 14px rgba(217,166,108,.28)}
+.board-row.top2{background:linear-gradient(90deg,#F1F2F5,#FDFDFE);border-color:#C9CDD3}
+.board-row.top3{background:linear-gradient(90deg,#FBE6D6,#FFFAF5);border-color:#E3B08C}
+.board-rank{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:700;font-size:14px;background:var(--surface);color:var(--text2);flex-shrink:0;border:1px solid var(--border)}
+.board-row.top1 .board-rank{background:#E8C877;color:#5B4300;border-color:#D9A66C}
+.board-row.top2 .board-rank{background:#C9CDD3;color:#3D4046;border-color:#AEB2B8}
+.board-row.top3 .board-rank{background:#E3B08C;color:#5A3117;border-color:#C88F62}
+.board-medal{font-size:18px;margin-right:5px;vertical-align:-2px}
+.board-name-wrap{flex:1;min-width:0}
+.board-name{font-size:14px;font-weight:700;color:var(--text)}
+.board-branch-tag{display:inline-block;font-size:10px;font-weight:500;color:var(--brand-red-dark);background:var(--brand-rose-bg);border:1px solid var(--brand-rose-border);border-radius:20px;padding:1px 9px;margin-left:8px;vertical-align:2px}
+.board-row.top1 .board-name{font-size:16px}
+.board-sub{font-size:10px;color:var(--text3);margin-top:2px}
+.board-count-wrap{text-align:right;flex-shrink:0;line-height:1.1}
+.board-count{font-family:var(--mono);font-size:22px;font-weight:700;color:var(--brand-red-dark)}
+.board-row.top1 .board-count{font-size:26px}
+.board-count-lbl{font-size:9px;color:var(--text3);letter-spacing:.05em}
+.board-foot{padding:16px 24px 24px;text-align:center;font-size:11px;color:var(--text2);border-top:1px dashed var(--border);margin-top:6px}
 </style>
 </head>
 <body>
@@ -171,6 +205,7 @@ code{font-family:var(--mono);font-size:11px;color:var(--text2)}
   <div class="btab" data-b="竹北" onclick="switchBranch('竹北')">竹北 <small id="bc-竹北" style="font-size:10px;color:var(--text3);margin-left:3px"></small></div>
   <div class="btab" data-b="北屯" onclick="switchBranch('北屯')">北屯 <small id="bc-北屯" style="font-size:10px;color:var(--text3);margin-left:3px"></small></div>
   <div class="btab stab" data-b="__stat" onclick="switchBranch('__stat')">📊 每月統計</div>
+  <div class="btab stab board-tab" data-b="__board" onclick="switchBranch('__board')">🏆 戰情榜</div>
 </div>
 
 <div id="case-area">
@@ -228,6 +263,23 @@ code{font-family:var(--mono);font-size:11px;color:var(--text2)}
   <div class="main-content">
     <div class="stat-grid" id="stat-cards"></div>
     <div id="monthly-wrap"></div>
+  </div>
+</div>
+
+<div id="board-area" style="display:none">
+  <div class="main-content">
+    <div class="board-toolbar-outer">
+      <button class="btn btn-sm" onclick="exportShotEl(document.getElementById('board-shot'),'榮耀戰情榜')">📸 下載(jpg)</button>
+    </div>
+    <div class="board-wrap" id="board-shot">
+      <div class="board-head">
+        <div class="board-head-eyebrow">MEGAIA · HONOR BOARD</div>
+        <div class="board-head-title">🏆全臉公開戰力榜｜本月案例先鋒</div>
+        <div class="board-head-note">每一位成功簽下全臉公開的客人，都是美加最珍貴的真實案例資產！<br>看看本月誰最會溝通、最能讓客人放心把故事交給我們✨</div>
+      </div>
+      <div class="board-body" id="board-list"></div>
+      <div class="board-foot">榜單持續累計中，持續突破，一起邁向下一個高峰 ✨</div>
+    </div>
   </div>
 </div>
 
@@ -394,10 +446,17 @@ function switchBranch(br){
   if(br==='__stat'){
     document.getElementById('case-area').style.display='none';
     document.getElementById('stat-area').style.display='block';
+    document.getElementById('board-area').style.display='none';
     renderStat();
+  } else if(br==='__board'){
+    document.getElementById('case-area').style.display='none';
+    document.getElementById('stat-area').style.display='none';
+    document.getElementById('board-area').style.display='block';
+    renderBoard();
   } else {
     document.getElementById('case-area').style.display='';
     document.getElementById('stat-area').style.display='none';
+    document.getElementById('board-area').style.display='none';
     document.getElementById('m-branch').value=br;
     renderCur();
   }
@@ -603,6 +662,48 @@ function renderStat(){
 }
 
 // ══════════════════════════════════════════
+//  HONOR BOARD（戰情榜）
+// ══════════════════════════════════════════
+function getStaffFullBoard(){
+  const map={};
+  cases.forEach(c=>{
+    const names=(c.staff||'').split(/[、,\/]/).map(s=>s.trim()).filter(Boolean);
+    names.forEach(n=>{
+      if(!map[n]) map[n]={staff:n,full:0,total:0,branchCount:{}};
+      map[n].total++;
+      if(c.level==='全臉公開') map[n].full++;
+      if(c.branch){ map[n].branchCount[c.branch]=(map[n].branchCount[c.branch]||0)+1; }
+    });
+  });
+  return Object.values(map).map(r=>{
+    const branches=Object.entries(r.branchCount).sort((a,b)=>b[1]-a[1]).map(e=>e[0]);
+    r.branch = branches.join('、') || '—';
+    return r;
+  }).sort((a,b)=> b.full-a.full || b.total-a.total || a.staff.localeCompare(b.staff,'zh-Hant'));
+}
+
+function renderBoard(){
+  const rows=getStaffFullBoard();
+  const medals=['🥇','🥈','🥉'];
+  const html = rows.length ? rows.map((r,i)=>{
+    const rankClass = i===0?'top1':i===1?'top2':i===2?'top3':'';
+    const medal = i<3 ? `<span class="board-medal">${medals[i]}</span>` : '';
+    return `<div class="board-row ${rankClass}">
+      <div class="board-rank">${i+1}</div>
+      <div class="board-name-wrap">
+        <div class="board-name">${medal}${esc(r.staff)}<span class="board-branch-tag">${esc(r.branch)}</span></div>
+        <div class="board-sub">總案例 ${r.total} 筆</div>
+      </div>
+      <div class="board-count-wrap">
+        <div class="board-count">${r.full}</div>
+        <div class="board-count-lbl">全臉公開</div>
+      </div>
+    </div>`;
+  }).join('') : `<div class="empty"><span class="empty-ico">🏆</span><p>尚無資料，請先匯入或新增案例</p></div>`;
+  document.getElementById('board-list').innerHTML = html;
+}
+
+// ══════════════════════════════════════════
 //  CRUD (local)
 // ══════════════════════════════════════════
 function sfLocal(id, field, val){
@@ -692,7 +793,7 @@ function saveModal(){
     cases.push(obj);
   }
   updateBadges(); closeModal();
-  if(curBranch==='__stat') renderStat(); else if(obj.branch===curBranch) renderCur();
+  if(curBranch==='__stat') renderStat(); else if(curBranch==='__board') renderBoard(); else if(obj.branch===curBranch) renderCur();
   saveCases();
   toast('✓ 案例已儲存');
 }
@@ -795,7 +896,7 @@ function doImp(idxs){
   cases.push(...add);
   saveCases();
   updateBadges(); closeImp();
-  if(curBranch==='__stat') renderStat(); else renderCur();
+  if(curBranch==='__stat') renderStat(); else if(curBranch==='__board') renderBoard(); else renderCur();
   toast(`✓ 已匯入 ${add.length} 筆案例`);
 }
 
